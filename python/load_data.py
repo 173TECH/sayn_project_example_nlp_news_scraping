@@ -39,7 +39,7 @@ class LoadData(PythonTask):
 
         for link in links:
 
-            table = table_temp + link[29:-8].replace("/","_")
+            table = table_temp + link[29:-8].replace("/","_") # automatic table names
 
             df = fetch_data(link)
             logging = self.logger

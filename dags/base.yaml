@@ -22,3 +22,7 @@ tasks:
     file_name: clean_and_agg.sql
     parents:
       - load_data
+
+  nlp:
+    type: python
+    class: analysis.NLP
