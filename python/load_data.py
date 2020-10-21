@@ -1,7 +1,7 @@
-import sqlite3
-from .misc.data_fetch import fetch_data
+import pandas as pd
 from datetime import datetime
 from sayn import PythonTask
+from .misc.data_fetch import fetch_data
 
 
 links = ["http://feeds.bbci.co.uk/news/england/rss.xml",
@@ -17,44 +17,30 @@ links = ["http://feeds.bbci.co.uk/news/england/rss.xml",
 
 
 class LoadData(PythonTask):
-    def setup(self):
-        err = False
-        for link in links:
-            try:
-                self.data_to_load = fetch_data(link)
-            except Exception as e:
-                err = True
-                self.logger.error(e)
-
-        if err:
-            return self.failed()
-        else:
-            return self.ready()
-
     def run(self):
 
         process_start_time = datetime.now()
 
-        table_temp = self.parameters["user_prefix"] + self.parameters["table"]
+        table = self.parameters["user_prefix"] + self.parameters["temp_table"]
+        logging = self.logger
+
+        df = pd.DataFrame()
 
         for link in links:
 
-            table = table_temp + link[29:-8].replace("/","_") # automatic table names
-
-            df = fetch_data(link)
-            logging = self.logger
-            if df is not None:
-                n_rows = len(df)
-                logging.info(
-                    f"Loading {n_rows} rows into destination: {table}...."
-                )
-                df.to_sql(
-                    table,
-                    self.default_db.engine,
-                    if_exists="append",
-                    index=False,
-                )
-                logging.info("Load done.")
+            temp_df = fetch_data(link)
+            n_rows = len(temp_df)
+            df = df.append(temp_df)
+            logging.info(
+                f"Loading {n_rows} rows into destination: {table}...."
+            )
+        if df is not None:
+            df.to_sql( table
+                       ,self.default_db.engine
+                       ,if_exists="append"
+                       ,index=False,
+            )
+            logging.info("Load done.")
 
         process_end_time = datetime.now()
 

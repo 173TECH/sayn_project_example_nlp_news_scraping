@@ -13,20 +13,24 @@ tasks:
   load_data:
     type: python
     class: load_data.LoadData
+    parameters:
+      temp_table: full_data
 
   # autosql
   # autosql tasks enable to write a SELECT statement and SAYN creates the table / view automatically
   # the SQL queries for those models are stored into the sql folder
-  full_cleaned_data:
+  clean_data:
     preset: modelling
-    file_name: clean_and_agg.sql
+    file_name: remove_duplicates.sql
     parents:
       - load_data
+    parameters:
+      table: cleaned_data
 
   nlp:
     type: python
     class: analysis.NLP
     parents:
-      - full_cleaned_data
+      - clean_data
     parameters:
       table: processed_texts

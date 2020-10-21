@@ -6,26 +6,19 @@ from sayn import PythonTask
 
 
 class NLP(PythonTask):
-    def setup(self):
-        err = False
-        try:
-            # Connect and read from database
-            conn = sqlite3.connect("dev.db")
-            self.data = pd.read_sql_query("select * from ts_full_cleaned_data;", conn)
-        except Exception as e:
-            err = True
-            self.logger.error(e)
-
-        if err:
-            return self.failed()
-        else:
-            return self.ready()
 
     def run(self):
 
         process_start_time = datetime.now()
 
         logging = self.logger
+        user_prefix = self.project_parameters["user_prefix"]
+
+
+        # Connect and read from database
+
+        conn = sqlite3.connect("dev.db")
+        df = pd.read_sql_query(f"select * from {user_prefix}cleaned_data;", conn)
 
         # Process the texts from article titles and summaries
 
@@ -33,13 +26,14 @@ class NLP(PythonTask):
 
         for t in text_fields:
             logging.info(f"Processing texts for {t} field")
-            desc_text(self.data, t, "english")
+            desc_text(df, t, "english")
             logging.info("Processing Completed!")
 
         # Load the processed texts back into the database
-        df = self.data
+
+        df.published = df.published.apply(lambda x: datetime.strptime(x, '%a, %d %b %Y %H:%M:%S %Z')) # Convert published timestamps to datetime
         if df is not None:
-            table = self.project_parameters["user_prefix"] + self.task_parameters["table"]
+            table = user_prefix + self.task_parameters["table"]
             n_rows = len(df)
             logging.info(f"Loading {n_rows} rows into destination: {table}....")
             df.to_sql(
@@ -88,6 +82,8 @@ class NLP(PythonTask):
             logging.info(f"{group}_wordcloud.png generated succesfully!")
 
         process_end_time = datetime.now()
+
+
 
         # Add process timing to logger
 
