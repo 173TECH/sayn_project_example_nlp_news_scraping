@@ -25,33 +25,74 @@ class NLP(PythonTask):
 
         process_start_time = datetime.now()
 
-        table_temp = self.project_parameters["user_prefix"] + self.project_parameters["table"]
+        logging = self.logger
 
         # Process the texts from article titles and summaries
+
         text_fields = ["title", "summary"]
 
         for t in text_fields:
-            self.logger.info(f"Processing texts for {t} field")
+            logging.info(f"Processing texts for {t} field")
             desc_text(self.data, t, "english")
-            self.logger.info("Processing Completed!")
+            logging.info("Processing Completed!")
+
+        # Load the processed texts back into the database
+        df = self.data
+        if df is not None:
+            table = self.project_parameters["user_prefix"] + self.task_parameters["table"]
+            n_rows = len(df)
+            logging.info(f"Loading {n_rows} rows into destination: {table}....")
+            df.to_sql(
+                      table,
+                      self.default_db.engine,
+                      if_exists="replace",
+                      index=False,
+            )
+            logging.info("Load done.")
+
 
         # Basic text data summaries, grouped by source
 
-        sources = self.data.groupby("source")
+        sources = df.groupby("source")
 
-        print("\n Article Title Word Stats \n")
-        print(sources.title_words.describe())
-        (sources.title_words.describe()).to_csv("article title word stats.csv")
-        print("\n Article Summary Word Stats \n")
-        print(sources.summary_words.describe())
-        (sources.summary_words.describe()).to_csv("article summary word stats.csv")
+        logging.info("Generating text data summaries grouped by source")
+
+        (sources.title_words.describe()).to_csv("python/summaries/article_title_word_stats.csv")
+        logging.info("Generated article_title_word_stats.csv")
+
+        (sources.summary_words.describe()).to_csv("python/summaries/article_summary_word_stats.csv")
+        logging.info("Generated article_summary_word_stats.csv")
+
+        # Wordcloud
+
+        logging.info("Prepping word clouds")
+
+        full_text = " ".join(article for article in df.summary)
         grouped_texts = sources.summary.sum()
 
-        full_text = " ".join(article for article in self.data.summary)
         stopwords = words()
-        stopwords.update(["will", "said","say","says", "US", "Scotland", "England", "Wales", "NI", "Ireland", "Europe","country","BBC", "yn"])
+        stopwords.update(["will", "said","say","says", "US", "Scotland", "England",
+                          "Wales", "NI", "Ireland", "Europe","country","BBC", "yn"])
 
-        word_cloud("bbc", full_text, stopwords)
+        # Full_text wordcloud
+
+        logging.info("Generating bbc_wordcloud.png")
+        word_cloud("bbc", full_text, stopwords, b_colour = "white", c_colour = "black")
+        logging.info("bbc_wordcloud.png generated succesfully!")
+
+        # Source specific wordclouds
 
         for group, text in zip(grouped_texts.keys(), grouped_texts):
+            logging.info(f"Generating {group}_wordcloud.png")
             word_cloud(group, text, stopwords)
+            logging.info(f"{group}_wordcloud.png generated succesfully!")
+
+        process_end_time = datetime.now()
+
+        # Add process timing to logger
+
+        logging.info("Process done, see details on timing below:")
+        logging.info(f"Process started at: {process_start_time}.")
+        logging.info(f"Process ended at: {process_end_time}.")
+
+        return self.success()

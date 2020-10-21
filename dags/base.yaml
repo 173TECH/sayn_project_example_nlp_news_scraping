@@ -26,3 +26,7 @@ tasks:
   nlp:
     type: python
     class: analysis.NLP
+    parents:
+      - full_cleaned_data
+    parameters:
+      table: processed_texts

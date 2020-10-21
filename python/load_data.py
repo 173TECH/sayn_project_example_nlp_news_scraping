@@ -35,7 +35,7 @@ class LoadData(PythonTask):
 
         process_start_time = datetime.now()
 
-        table_temp = self.project_parameters["user_prefix"] + self.project_parameters["table"]
+        table_temp = self.parameters["user_prefix"] + self.parameters["table"]
 
         for link in links:
 
@@ -58,17 +58,10 @@ class LoadData(PythonTask):
 
         process_end_time = datetime.now()
 
-        # print process timing
+        # Add process timing to logger
+
         logging.info("Process done, see details on timing below:")
-        logging.info(
-            "Process started at: {process_start_time}.".format(
-                process_start_time=process_start_time
-            )
-        )
-        logging.info(
-            "Process ended at: {process_end_time}.".format(
-                process_end_time=process_end_time
-            )
-        )
+        logging.info(f"Process started at: {process_start_time}.")
+        logging.info(f"Process ended at: {process_end_time}.")
 
         return self.success()
