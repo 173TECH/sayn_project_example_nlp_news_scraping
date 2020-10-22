@@ -1,3 +1,8 @@
 sayn
 feedparser
+numpy
 pandas
+matplotlib
+PIL
+wordcloud
+nltk

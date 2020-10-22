@@ -14,7 +14,18 @@ tasks:
     type: python
     class: load_data.LoadData
     parameters:
-      temp_table: full_data
+      table: full_data
+      links:
+        - http://feeds.bbci.co.uk/news/england/rss.xml
+        - http://feeds.bbci.co.uk/news/wales/rss.xml
+        - http://feeds.bbci.co.uk/news/scotland/rss.xml
+        - http://feeds.bbci.co.uk/news/northern_ireland/rss.xml
+        - http://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml
+        - http://feeds.bbci.co.uk/news/world/middle_east/rss.xml
+        - http://feeds.bbci.co.uk/news/world/latin_america/rss.xml
+        - http://feeds.bbci.co.uk/news/world/europe/rss.xml
+        - http://feeds.bbci.co.uk/news/world/asia/rss.xml
+        - http://feeds.bbci.co.uk/news/world/africa/rss.xml
 
   # autosql
   # autosql tasks enable to write a SELECT statement and SAYN creates the table / view automatically
@@ -25,7 +36,7 @@ tasks:
     parents:
       - load_data
     parameters:
-      table: cleaned_data
+      table: full_data
 
   nlp:
     type: python
@@ -33,4 +44,7 @@ tasks:
     parents:
       - clean_data
     parameters:
-      table: processed_texts
+      table: clean_data
+      text:
+        - title
+        - summary

@@ -4,4 +4,5 @@ SELECT DISTINCT(id)
      , link
      , guidislink
      , published
+     , source
 FROM {{user_prefix}}{{table}}

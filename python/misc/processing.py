@@ -19,7 +19,7 @@ def desc_text(df, text_field, language):
 
 # Automated word cloud generating function
 
-def word_cloud(name, text, stopwords, b_colour = "white", c_colour = "firebrick"):
+def word_cloud(name, text, stopwords, b_colour = "white", c_colour = "firebrick", show=False):
     try:
         mask = np.array(Image.open(f"python/img/masks/{name}_mask.png"))
     except:
@@ -31,10 +31,11 @@ def word_cloud(name, text, stopwords, b_colour = "white", c_colour = "firebrick"
                           , contour_width=1
                           , contour_color= c_colour).generate(text)
     wordcloud.to_file(f"python/img/{name}_wordcloud.png")
-# Uncomment if you want to show plots
-    # plt.imshow(wordcloud, interpolation="bilinear")
-    # plt.axis("off")
-    # plt.show()
+
+    if show:
+        plt.imshow(wordcloud, interpolation="bilinear")
+        plt.axis("off")
+        plt.show()
 
 
 # Standard set of STOPWORDS

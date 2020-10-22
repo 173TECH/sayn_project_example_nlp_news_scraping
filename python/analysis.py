@@ -12,17 +12,18 @@ class NLP(PythonTask):
         process_start_time = datetime.now()
 
         logging = self.logger
-        user_prefix = self.project_parameters["user_prefix"]
+        user_prefix = self.parameters["user_prefix"]
+        table = self.task_parameters["table"]
+        database = self.default_db
 
 
-        # Connect and read from database
+        # Read from database to dataframe
 
-        conn = sqlite3.connect("dev.db")
-        df = pd.read_sql_query(f"select * from {user_prefix}cleaned_data;", conn)
+        df = pd.DataFrame(database.select(f"SELECT * FROM {user_prefix}{table}"))
 
         # Process the texts from article titles and summaries
 
-        text_fields = ["title", "summary"]
+        text_fields = self.parameters["text"]
 
         for t in text_fields:
             logging.info(f"Processing texts for {t} field")
@@ -32,13 +33,14 @@ class NLP(PythonTask):
         # Load the processed texts back into the database
 
         df.published = df.published.apply(lambda x: datetime.strptime(x, '%a, %d %b %Y %H:%M:%S %Z')) # Convert published timestamps to datetime
+
         if df is not None:
-            table = user_prefix + self.task_parameters["table"]
+            table = user_prefix + "clean_data_nlp"
             n_rows = len(df)
             logging.info(f"Loading {n_rows} rows into destination: {table}....")
             df.to_sql(
                       table,
-                      self.default_db.engine,
+                      database.engine,
                       if_exists="replace",
                       index=False,
             )

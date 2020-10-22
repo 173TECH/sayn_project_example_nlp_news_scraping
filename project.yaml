@@ -43,4 +43,3 @@ presets:
 
 parameters:
   user_prefix: ts_
-  table: bbc_
