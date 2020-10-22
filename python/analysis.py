@@ -39,7 +39,7 @@ class NLP(PythonTask):
             n_rows = len(df)
             logging.info(f"Loading {n_rows} rows into destination: {output}....")
             df.to_sql(
-                      table,
+                      output,
                       database.engine,
                       if_exists="replace",
                       index=False,
@@ -47,21 +47,11 @@ class NLP(PythonTask):
             logging.info("Load done.")
 
 
-        # Basic text data summaries, grouped by source
-
-        sources = df.groupby("source")
-
-        logging.info("Generating text data summaries grouped by source")
-
-        (sources.title_words.describe()).to_csv("python/summaries/article_title_word_stats.csv")
-        logging.info("Generated article_title_word_stats.csv")
-
-        (sources.summary_words.describe()).to_csv("python/summaries/article_summary_word_stats.csv")
-        logging.info("Generated article_summary_word_stats.csv")
-
-        # Wordcloud
+        # Wordclouds of article summaries
 
         logging.info("Prepping word clouds")
+
+        sources = df.groupby("source")
 
         full_text = " ".join(article for article in df.summary)
         grouped_texts = sources.summary.sum()
@@ -84,8 +74,6 @@ class NLP(PythonTask):
             logging.info(f"{group}_wordcloud.png generated succesfully!")
 
         process_end_time = datetime.now()
-
-
 
         # Add process timing to logger
 

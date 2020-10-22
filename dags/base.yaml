@@ -48,3 +48,12 @@ tasks:
       text:
         - title
         - summary
+
+  text_stats:
+    preset: modelling
+    file_name: group_summary.sql
+    materialisation: view
+    parents:
+      - nlp
+    parameters:
+      table: clean_data_nlp
