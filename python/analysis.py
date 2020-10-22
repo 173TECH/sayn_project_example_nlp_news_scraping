@@ -35,9 +35,9 @@ class NLP(PythonTask):
         df.published = df.published.apply(lambda x: datetime.strptime(x, '%a, %d %b %Y %H:%M:%S %Z')) # Convert published timestamps to datetime
 
         if df is not None:
-            table = user_prefix + "clean_data_nlp"
+            output = user_prefix + "clean_data_nlp"
             n_rows = len(df)
-            logging.info(f"Loading {n_rows} rows into destination: {table}....")
+            logging.info(f"Loading {n_rows} rows into destination: {output}....")
             df.to_sql(
                       table,
                       database.engine,
