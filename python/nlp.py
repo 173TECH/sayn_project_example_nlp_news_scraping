@@ -1,6 +1,5 @@
 import pandas as pd
-import sqlite3
-from .misc.processing import desc_text, words, word_cloud
+from .misc.processing import desc_text
 from datetime import datetime
 from sayn import PythonTask
 
@@ -11,9 +10,11 @@ class NLP(PythonTask):
 
         process_start_time = datetime.now()
 
-        logging = self.logger
         user_prefix = self.parameters["user_prefix"]
         table = self.task_parameters["table"]
+        text_fields = self.parameters["text"]
+
+        logging = self.logger
         database = self.default_db
 
 
@@ -22,8 +23,6 @@ class NLP(PythonTask):
         df = pd.DataFrame(database.select(f"SELECT * FROM {user_prefix}{table}"))
 
         # Process the texts from article titles and summaries
-
-        text_fields = self.parameters["text"]
 
         for t in text_fields:
             logging.info(f"Processing texts for {t} field")
@@ -35,7 +34,7 @@ class NLP(PythonTask):
         df.published = df.published.apply(lambda x: datetime.strptime(x, '%a, %d %b %Y %H:%M:%S %Z')) # Convert published timestamps to datetime
 
         if df is not None:
-            output = user_prefix + "clean_data_nlp"
+            output = f"{user_prefix}{table}_{self.name}"
             n_rows = len(df)
             logging.info(f"Loading {n_rows} rows into destination: {output}....")
             df.to_sql(
@@ -45,33 +44,6 @@ class NLP(PythonTask):
                       index=False,
             )
             logging.info("Load done.")
-
-
-        # Wordclouds of article summaries
-
-        logging.info("Prepping word clouds")
-
-        sources = df.groupby("source")
-
-        full_text = " ".join(article for article in df.summary)
-        grouped_texts = sources.summary.sum()
-
-        stopwords = words()
-        stopwords.update(["will", "said","say","says", "US", "Scotland", "England",
-                          "Wales", "NI", "Ireland", "Europe","country","BBC", "yn"])
-
-        # Full_text wordcloud
-
-        logging.info("Generating bbc_wordcloud.png")
-        word_cloud("bbc", full_text, stopwords, b_colour = "white", c_colour = "black")
-        logging.info("bbc_wordcloud.png generated succesfully!")
-
-        # Source specific wordclouds
-
-        for group, text in zip(grouped_texts.keys(), grouped_texts):
-            logging.info(f"Generating {group}_wordcloud.png")
-            word_cloud(group, text, stopwords)
-            logging.info(f"{group}_wordcloud.png generated succesfully!")
 
         process_end_time = datetime.now()
 

@@ -149,3 +149,4 @@ cython_debug/
 .DS_Store
 __pycache__
 example.db
+dev.db

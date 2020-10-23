@@ -9,7 +9,7 @@ tasks:
   # python
   # here we define a Python task
   # python tasks are stored into the python folder
-  # this task loads some data into our SQLite database
+
   load_data:
     type: python
     class: load_data.LoadData
@@ -27,9 +27,47 @@ tasks:
         - http://feeds.bbci.co.uk/news/world/asia/rss.xml
         - http://feeds.bbci.co.uk/news/world/africa/rss.xml
 
+
+  nlp:
+    type: python
+    class: nlp.NLP
+    parents:
+      - clean_data
+    parameters:
+      table: clean_data
+      text:
+        - title
+        - summary
+
+
+  wordcloud:
+    type: python
+    class: wordcloud.RenderCloud
+    parents:
+      - clean_data
+    parameters:
+      table: clean_data
+      stopwords:
+        - say
+        - said
+        - says
+        - will
+        - country
+        - US
+        - England
+        - Scotland
+        - Wales
+        - NI
+        - Ireland
+        - Europe
+        - BBC
+        - yn
+
+
   # autosql
   # autosql tasks enable to write a SELECT statement and SAYN creates the table / view automatically
   # the SQL queries for those models are stored into the sql folder
+
   clean_data:
     preset: modelling
     file_name: remove_duplicates.sql
@@ -38,16 +76,6 @@ tasks:
     parameters:
       table: full_data
 
-  nlp:
-    type: python
-    class: analysis.NLP
-    parents:
-      - clean_data
-    parameters:
-      table: clean_data
-      text:
-        - title
-        - summary
 
   text_stats:
     preset: modelling
