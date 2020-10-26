@@ -3,6 +3,6 @@ feedparser
 numpy
 pandas
 matplotlib
-PIL
+Pillow
 wordcloud
 nltk
