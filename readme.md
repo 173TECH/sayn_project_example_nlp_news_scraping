@@ -12,7 +12,7 @@ For more details, you can see the documentation here: https://173tech.github.io/
 
 **Brief Overview:**
 
- 1. This project scrapes data from the BBC News RSS feeds and writes it into a sqlite database using SAYN's Python Tasks.
+ 1. This project scrapes data from the BBC News RSS feeds and writes it into a SQLite database using SAYN's Python Tasks.
 
  2. This data is cleaned using SAYN's AutoSQL Tasks.
 
