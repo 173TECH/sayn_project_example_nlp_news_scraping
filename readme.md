@@ -2,6 +2,14 @@ This is a sample SAYN project. It shows you how to implement and use SAYN for da
 
 For more details, you can see the documentation here: https://173tech.github.io/sayn/
 
+Intro:
+
+- This project scrapes data from the BBC News RSS feeds and writes it into a sqlite database using SAYN's Python Tasks.
+
+- This data is cleaned using SAYN's AutoSQL Tasks.
+
+- The cleaned data is then used for NLP in another Python Task to generate text statistics and wordcloud images.
+
 ----
 Quick overview:
 
@@ -22,7 +30,7 @@ SAYN uses some key commands for run:
   - sayn compile: compiles the code (similar flags apply)
   - sayn --help for full detail on commands
 
-
+---
 Additional Notes:
 
 - This project has a number of dependencies listed in requirements.txt, to install them please use "pip install -r requirements.txt"
