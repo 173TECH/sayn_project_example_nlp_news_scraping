@@ -151,3 +151,4 @@ __pycache__
 example.db
 dev.db
 prod.db
+*.png
