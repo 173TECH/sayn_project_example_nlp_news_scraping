@@ -14,7 +14,7 @@ For more details, you can see the documentation here: https://173tech.github.io/
 
  1. This project scrapes data from the BBC News RSS feeds and writes it into a SQLite database using SAYN's Python Tasks.
 
- 2. Data is then cleaned using SAYN's AutoSQL Tasks.
+ 2. Data is cleaned using SAYN's AutoSQL Tasks.
 
  3. The cleaned data is used for NLP in another Python Task to generate text statistics and wordcloud images.
  
