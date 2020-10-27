@@ -17,11 +17,9 @@ For more details, you can see the documentation here: https://173tech.github.io/
  2. This data is cleaned using SAYN's AutoSQL Tasks.
 
  3. The cleaned data is then used for NLP in another Python Task to generate text statistics and wordcloud images.
- ![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
  
- ![Visualisation of this project's SAYN process]
- 
- (images/dag.png)
+ ![Visualisation of this project's SAYN process] (images/dag.png)
+
 
 ----
 
