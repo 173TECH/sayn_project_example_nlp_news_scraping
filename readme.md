@@ -18,7 +18,7 @@ For more details, you can see the documentation here: https://173tech.github.io/
 
  3. The cleaned data is then used for NLP in another Python Task to generate text statistics and wordcloud images.
  
- ![Visualisation of this project's SAYN process] (/images/dag.png)
+ ![Visualisation of this project's SAYN process](/images/dag.png)
 
 
 ----
