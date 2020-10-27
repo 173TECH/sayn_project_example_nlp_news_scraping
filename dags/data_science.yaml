@@ -1,0 +1,40 @@
+tasks:
+
+  # Python
+
+  # Performs NLP on clean_data
+  nlp:
+    type: python
+    class: nlp.NLP
+    parents:
+      - clean_data
+    parameters:
+      table: clean_data
+      text:
+        - title
+        - summary
+
+  # Generates wordclouds for every link in load_data
+  # The stopwords parameter adds additional stopwords to our task
+  wordcloud:
+    type: python
+    class: wordcloud.RenderCloud
+    parents:
+      - clean_data
+    parameters:
+      table: clean_data
+      stopwords:
+        - say
+        - said
+        - says
+        - will
+        - country
+        - US
+        - England
+        - Scotland
+        - Wales
+        - NI
+        - Ireland
+        - Europe
+        - BBC
+        - yn

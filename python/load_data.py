@@ -9,11 +9,17 @@ class LoadData(PythonTask):
 
         process_start_time = datetime.now()
 
+        # Assign the required parameters
+
         links = self.parameters["links"]
         table = self.parameters["user_prefix"] + self.task_parameters["table"]
         logging = self.logger
 
+        # Declare an empty dataframe
+
         df = pd.DataFrame()
+
+        # Append data from all links to the empty dataframe
 
         for link in links:
 
@@ -23,6 +29,9 @@ class LoadData(PythonTask):
             logging.info(
                 f"Loading {n_rows} rows into destination: {table}...."
             )
+
+        # Append the filled dataframe to the database
+
         if df is not None:
             df.to_sql( table
                        ,self.default_db.engine

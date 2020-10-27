@@ -1,0 +1,21 @@
+tasks:
+
+  # Python
+
+  # Use this to extract data from links and write to database
+  load_data:
+    type: python
+    class: load_data.LoadData
+    parameters:
+      table: full_data
+      links:
+        - http://feeds.bbci.co.uk/news/england/rss.xml
+        - http://feeds.bbci.co.uk/news/wales/rss.xml
+        - http://feeds.bbci.co.uk/news/scotland/rss.xml
+        - http://feeds.bbci.co.uk/news/northern_ireland/rss.xml
+        - http://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml
+        - http://feeds.bbci.co.uk/news/world/middle_east/rss.xml
+        - http://feeds.bbci.co.uk/news/world/latin_america/rss.xml
+        - http://feeds.bbci.co.uk/news/world/europe/rss.xml
+        - http://feeds.bbci.co.uk/news/world/asia/rss.xml
+        - http://feeds.bbci.co.uk/news/world/africa/rss.xml

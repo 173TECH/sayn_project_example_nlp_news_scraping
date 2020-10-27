@@ -11,6 +11,7 @@ class RenderCloud(PythonTask):
 
         process_start_time = datetime.now()
 
+        # Assign the required parameters 
 
         user_prefix = self.parameters["user_prefix"]
         table = self.task_parameters["table"]
