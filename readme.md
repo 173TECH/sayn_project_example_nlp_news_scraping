@@ -6,17 +6,17 @@ For more details, you can see the documentation here: https://173tech.github.io/
 
 ---
 
-## Brief Overview:
+Brief Overview:
 
  1. This project scrapes data from the BBC News RSS feeds and writes it into a sqlite database using SAYN's Python Tasks.
 
  2. This data is cleaned using SAYN's AutoSQL Tasks.
 
- 3.The cleaned data is then used for NLP in another Python Task to generate text statistics and wordcloud images.
+ 3. The cleaned data is then used for NLP in another Python Task to generate text statistics and wordcloud images.
 
 ----
 
-## Quick Notes:
+Quick Notes:
 
 SAYN uses 2 key files to control the project:
   - settings.yaml: individual settings which are not shared (Note: You will need to create this before using "sayn run")
@@ -36,7 +36,7 @@ SAYN uses some key commands for run:
   - sayn --help for full detail on commands
 
 ---
-## Additional Notes:
+Additional Notes:
 
 - This project has a number of dependencies listed in requirements.txt, to install them please use "pip install -r requirements.txt"
 - Visualisation of the whole SAYN process for this project can be found in "images/dag.png"
