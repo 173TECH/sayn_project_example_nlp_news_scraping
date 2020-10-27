@@ -20,7 +20,7 @@ For more details, you can see the documentation here: https://173tech.github.io/
  
  ![Visualisation of this project's SAYN process]
  
- (https://github.com/173TECH/rss_tutorial/images/dag.png)
+ (images/dag.png)
 
 ----
 
