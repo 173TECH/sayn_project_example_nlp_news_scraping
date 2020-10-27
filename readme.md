@@ -30,7 +30,7 @@ For more details, you can see the documentation here: https://173tech.github.io/
 **Quick Notes:**
 
 SAYN uses 2 key files to control the project:
-  - settings.yaml: individual settings which are not shared *(Note: You will need to create this before using "sayn run")*
+  - settings.yaml: individual settings which are not shared **(Note: You will need to create this before using "sayn run")**
   - project.yaml: project settings which are shared across all collaborators on the project
 
 SAYN code is stored in 3 main folders:
