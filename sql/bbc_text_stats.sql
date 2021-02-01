@@ -6,7 +6,7 @@ SELECT source
      , AVG(summary_words) AS average_sw
      , AVG(summary_sentences) AS average_sss
 
-FROM {{user_prefix}}{{table}}
+FROM {{user_prefix}}f_bbc_feeds_nlp
 
 GROUP BY 1
 

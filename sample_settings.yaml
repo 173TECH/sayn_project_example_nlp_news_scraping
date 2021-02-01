@@ -1,0 +1,54 @@
+#For more information on how to use SAYN, please visit our documentation:
+#https://173tech.github.io/sayn/
+
+#SETTINGS OVERVIEW
+
+# This file contains individual settings - those are not shared across the SAYN project users
+# Please see the documentation for more information on the "settings.yaml" file
+#https://173tech.github.io/sayn/settings/settings_yaml/
+
+
+#DEFAULT PROFILE SECTION
+
+# The default profile that will be used when running SAYN
+# Note: The default profile must be one of the profiles set below
+default_profile: dev
+
+
+#PROFILES SECTION
+
+# Sets the various profiles that can be used for SAYN
+# A profile has 2 parts, credentials and parameters
+
+# This project sets a dev and a prod profile
+# Note: There is no limit to the amount of profiles that can be specified
+profiles:
+  dev:
+    credentials:
+      warehouse: dev_db
+    parameters:
+      user_prefix: "" # Set your user prefix here (Overwrites user_prefix set in "project.yaml")
+
+
+  prod:
+    credentials:
+      warehouse: prod_db
+    parameters:
+      user_prefix: "" # Overwrites user_prefix set in "project.yaml"
+
+
+
+#CREDENTIALS SECTION
+
+# Lists the details of all credentials used by the SAYN project
+# For the detail of supported databases and specific connection parameters, please refer to the SAYN documentation
+
+# This project uses sqlite databases for both profiles
+# Note: Credentials can include both database and API connection details
+credentials:
+  dev_db:
+    type: sqlite
+    database: dev.db
+  prod_db:
+    type: sqlite
+    database: prod.db
