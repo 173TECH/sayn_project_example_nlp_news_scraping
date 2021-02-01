@@ -11,16 +11,17 @@ class RenderCloud(PythonTask):
 
         process_start_time = datetime.now()
 
-        # Assign the required parameters 
+        # Assign the required parameters
 
         user_prefix = self.parameters["user_prefix"]
         table = self.task_parameters["table"]
 
         logging = self.logger
+        database = self.default_db
 
         # Read from database to dataframe
 
-        df = pd.DataFrame(self.default_db.select(f"SELECT * FROM {user_prefix}{table}"))
+        df = pd.DataFrame(database.read_data(f"SELECT * FROM {user_prefix}{table}"))
 
         logging.info("Gathering scattered clouds....")
 
