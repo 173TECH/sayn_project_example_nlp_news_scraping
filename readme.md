@@ -17,12 +17,12 @@ For more details, you can see the documentation here: https://173tech.github.io/
  2. Data is cleaned using SAYN's AutoSQL Tasks.
 
  3. The cleaned data is used for NLP in another Python Task to generate text statistics and wordcloud images.
-
+ 
  ---
 
  **Project's SAYN process**
 
- ![Visualisation of this project's SAYN process](/images/tasks.png)
+ ![Visualisation of this project's SAYN process](/images/dag.png)
 
 
 ----
@@ -50,6 +50,6 @@ SAYN uses some key commands for run:
 **Additional Notes:**
 
 - This project has a number of dependencies listed in requirements.txt, to install them please use "pip install -r requirements.txt"
-- Visualisation of the whole SAYN process for this project can be found in "images/tasks.png"
+- Visualisation of the whole SAYN process for this project can be found in "images/dag.png"
 - In the python folder there is a "misc" folder which provides some additional functions that are imported during the python tasks
 - Masks for the wordclouds can be found in "python/img/masks"
