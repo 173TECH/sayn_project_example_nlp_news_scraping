@@ -1,51 +1,54 @@
 import pandas as pd
 from .misc.processing import words, word_cloud
-from datetime import datetime
 from sayn import PythonTask
 
 
 class RenderCloud(PythonTask):
+    def setup(self):
+        self.set_run_steps(
+            [
+                "Assigning required parameters",
+                "Aggregating texts",
+                "Getting stopwords",
+                "Generating clouds"
+            ]
+        )
+        return self.success()
+
 
     def run(self):
 
-        # Assign the required parameters
+        with self.step("Assigning required parameters"):
+            table = self.parameters["user_prefix"] + self.task_parameters["table"]
 
-        user_prefix = self.parameters["user_prefix"]
-        table = self.task_parameters["table"]
-        database = self.default_db
 
-        # Read from database to dataframe
+        with self.step("Aggregating texts"):
 
-        df = pd.DataFrame(database.read_data(f"SELECT * FROM {user_prefix}{table}"))
+            df = pd.DataFrame(self.default_db.read_data(f"SELECT * FROM {table}"))
+            full_text = " ".join(article for article in df.summary)
 
-        self.info("Gathering scattered clouds....")
+            sources = df.groupby("source")
+            grouped_texts = sources.summary.sum()
 
-        # Aggregating texts
 
-        full_text = " ".join(article for article in df.summary)
+        with self.step("Getting stopwords"):
 
-        # Aggregating texts grouped by source
+            stopwords = words()
+            stopwords.update(self.parameters["stopwords"])
 
-        sources = df.groupby("source")
-        grouped_texts = sources.summary.sum()
 
-        # Getting Stopwords
+        with self.step("Generating clouds"):
 
-        stopwords = words()
-        stopwords.update(self.parameters["stopwords"])
+            self.info("Generating bbc_wordcloud.png")
+            word_cloud("bbc", full_text, stopwords, b_colour = "white", c_colour = "black")
+            self.info("bbc_wordcloud.png generated succesfully!")
 
-        # Full_text wordcloud
+            # Source specific wordclouds
 
-        self.info("Generating bbc_wordcloud.png")
-        word_cloud("bbc", full_text, stopwords, b_colour = "white", c_colour = "black")
-        self.info("bbc_wordcloud.png generated succesfully!")
-
-        # Source specific wordclouds
-
-        for group, text in zip(grouped_texts.keys(), grouped_texts):
-            self.info(f"Generating {group}_wordcloud.png")
-            word_cloud(group, text, stopwords)
-            self.info(f"{group}_wordcloud.png generated succesfully!")
+            for group, text in zip(grouped_texts.keys(), grouped_texts):
+                self.info(f"Generating {group}_wordcloud.png")
+                word_cloud(group, text, stopwords)
+                self.info(f"{group}_wordcloud.png generated succesfully!")
 
 
         return self.success()

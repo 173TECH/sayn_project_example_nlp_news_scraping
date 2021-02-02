@@ -7,9 +7,9 @@ tasks:
     type: python
     class: nlp.LanguageProcessing
     parents:
-      - f_bbc_feeds
+      - dim_bbc_feeds
     parameters:
-      table: f_bbc_feeds
+      table: dim_bbc_feeds
       text:
         - title
         - summary
@@ -20,9 +20,9 @@ tasks:
     type: python
     class: wordcloud.RenderCloud
     parents:
-      - f_bbc_feeds
+      - dim_bbc_feeds
     parameters:
-      table: f_bbc_feeds
+      table: dim_bbc_feeds
       stopwords:
         - say
         - said
