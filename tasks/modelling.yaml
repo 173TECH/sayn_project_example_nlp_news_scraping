@@ -10,7 +10,7 @@ tasks:
 
 
   # Provides some basic statistics on text within links, grouped by link
-    bbc_text_stats:
+    dim_bbc_feeds_nlp_stats:
       preset: modelling
       materialisation: view
       parents:
