@@ -1,14 +1,36 @@
 import pandas as pd
 from sayn import PythonTask
-from .misc.data_fetch import fetch_data
+import feedparser as f
+import pandas as pd
 
 
 class LoadData(PythonTask):
+
+    def fetch_bbc_data(self, link):
+        """Parse and label RSS BBC News data then return it in a pandas DataFrame"""
+
+        # get data from supplied link
+        raw_data = f.parse(link)
+
+         # transform data to dataframe
+        data = pd.DataFrame(raw_data.entries)
+
+        # remove incompatible columns
+        data.drop(["title_detail", "summary_detail", "links", "published_parsed"], axis=1, inplace=True)
+
+        # get the source
+        data["source"] = link[29:-8].replace("/","_")
+
+        # generating ids to be unique, since same story ids can be published in different sources
+        data["unique_id"] = data["id"] + data["source"]
+
+        return data
+
+
     def setup(self):
         self.set_run_steps(
             [
-                "Assigning required parameters",
-                "Appending data to dataframe",
+                "Appending BBC data to dataframe",
                 "Updating database"
             ]
         )
@@ -17,18 +39,16 @@ class LoadData(PythonTask):
 
     def run(self):
 
-        with self.step("Assigning required parameters"):
+        with self.step("Appending BBC data to dataframe"):
+
             links = self.parameters["links"]
             table = self.parameters["user_prefix"] + self.task_parameters["table"]
-
-
-        with self.step("Appending data to dataframe"):
 
             df = pd.DataFrame()
 
             for link in links:
 
-                temp_df = fetch_data(link)
+                temp_df = self.fetch_bbc_data(link)
                 n_rows = len(temp_df)
                 df = df.append(temp_df)
                 self.info(
@@ -43,8 +63,6 @@ class LoadData(PythonTask):
                            ,self.default_db.engine
                            ,if_exists="append"
                            ,index=False)
-
-                self.info("Load done.")
 
 
         return self.success()

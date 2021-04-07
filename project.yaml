@@ -27,13 +27,12 @@ default_db: warehouse
 # Presets used in the project
 # This project uses one preset for the AutoSQL tasks
 presets:
-
-    modelling:
-      type: autosql
-      materialisation: table
-      file_name: "{{ task.name }}.sql"
-      destination:
-        table: "{{ user_prefix }}{{ task.name }}" # Dynamic table names
+  modelling:
+    type: autosql
+    materialisation: table
+    file_name: "{{ task.name }}.sql"
+    destination:
+      table: "{{ user_prefix }}{{ task.name }}" # Dynamic table names
 
 
 # Parameters used in the project
