@@ -7,7 +7,7 @@ tasks:
     type: python
     class: load_data.LoadData
     parameters:
-      table: full_data
+      table: logs_bbc_feeds
       links:
         - http://feeds.bbci.co.uk/news/england/rss.xml
         - http://feeds.bbci.co.uk/news/wales/rss.xml

@@ -2,14 +2,14 @@ tasks:
 
   # Python
 
-  # Performs NLP on clean_data
+  # Performs NLP on dim_bbc_feeds
   nlp:
     type: python
-    class: nlp.NLP
+    class: nlp.LanguageProcessing
     parents:
-      - clean_data
+      - dim_bbc_feeds
     parameters:
-      table: clean_data
+      table: dim_bbc_feeds
       text:
         - title
         - summary
@@ -20,9 +20,9 @@ tasks:
     type: python
     class: wordcloud.RenderCloud
     parents:
-      - clean_data
+      - dim_bbc_feeds
     parameters:
-      table: clean_data
+      table: dim_bbc_feeds
       stopwords:
         - say
         - said
