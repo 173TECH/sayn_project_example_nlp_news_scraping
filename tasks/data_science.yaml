@@ -2,7 +2,7 @@ tasks:
 
   # Python
 
-  # Performs NLP on clean_data
+  # Performs NLP on dim_bbc_feeds
   nlp:
     type: python
     class: nlp.LanguageProcessing

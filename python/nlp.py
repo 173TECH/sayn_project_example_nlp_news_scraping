@@ -11,9 +11,18 @@ class LanguageProcessing(PythonTask):
 
     def desc_text(self, df, text_field, language):
         """Text stats generating function"""
-        df[text_field + "_letters"] = df[text_field].fillna("").str.len() # counts the number of letters in text_field
-        df[text_field + "_words"] = df[text_field].fillna("").apply(lambda x: len(word_tokenize(x, language=language))) #  counts the number of words in text_field
-        df[text_field +"_sentences"] = df[text_field].fillna("").apply(lambda x: len(sent_tokenize(x, language=language))) # counts the number of sentences in text_field
+
+        # counts the number of letters in text_field
+
+        df[text_field + "_letters"] = df[text_field].fillna("").str.len()
+
+        # counts the number of words in text_field
+
+        df[text_field + "_words"] = df[text_field].fillna("").apply(lambda x: len(word_tokenize(x, language=language)))
+
+        # counts the number of sentences in text_field
+
+        df[text_field +"_sentences"] = df[text_field].fillna("").apply(lambda x: len(sent_tokenize(x, language=language)))
 
 
     def setup(self):

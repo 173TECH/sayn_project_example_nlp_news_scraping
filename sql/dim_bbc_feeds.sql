@@ -6,4 +6,5 @@ SELECT DISTINCT unique_id
      , guidislink
      , published
      , source
+
 FROM {{user_prefix}}logs_bbc_feeds

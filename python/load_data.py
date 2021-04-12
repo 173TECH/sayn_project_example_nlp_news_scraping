@@ -10,18 +10,23 @@ class LoadData(PythonTask):
         """Parse and label RSS BBC News data then return it in a pandas DataFrame"""
 
         # get data from supplied link
+
         raw_data = f.parse(link)
 
          # transform data to dataframe
+
         data = pd.DataFrame(raw_data.entries)
 
         # remove incompatible columns
+
         data.drop(["title_detail", "summary_detail", "links", "published_parsed"], axis=1, inplace=True)
 
         # get the source
+
         data["source"] = link[29:-8].replace("/","_")
 
         # generating ids to be unique, since same story ids can be published in different sources
+
         data["unique_id"] = data["id"] + data["source"]
 
         return data

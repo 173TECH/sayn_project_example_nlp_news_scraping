@@ -10,8 +10,11 @@ class RenderCloud(PythonTask):
 
     def word_cloud(self, name, text, stopwords, b_colour = "white", c_colour = "firebrick", show=False):
         """Word cloud generating function"""
+
+        # attempt to find a compatible mask
+
         try:
-            mask = np.array(Image.open(f"python/img/masks/{name}_mask.png")) # attempt to find a compatible mask
+            mask = np.array(Image.open(f"python/img/masks/{name}_mask.png"))
         except:
             mask = None
 
@@ -22,9 +25,12 @@ class RenderCloud(PythonTask):
                               , contour_width=1
                               , contour_color= c_colour).generate(text)
 
-        wordcloud.to_file(f"python/img/{name}_wordcloud.png") # store wordcloud image in "python/img"
+        # store wordcloud image in "python/img"
+
+        wordcloud.to_file(f"python/img/{name}_wordcloud.png")
 
         # declare show=True if you want to show wordclouds
+
         if show:
             plt.imshow(wordcloud, interpolation="bilinear")
             plt.axis("off")
