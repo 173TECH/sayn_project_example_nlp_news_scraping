@@ -1,58 +1,60 @@
 import pandas as pd
-from .misc.processing import desc_text
-from datetime import datetime
 from sayn import PythonTask
+from nltk import download
+from nltk.tokenize import word_tokenize, sent_tokenize
+
+download("punkt")
 
 
-class NLP(PythonTask):
+class LanguageProcessing(PythonTask):
+    def desc_text(self, df, text_field, language):
+        """Text stats generating function"""
+
+        # counts the number of letters in text_field
+
+        df[text_field + "_letters"] = df[text_field].fillna("").str.len()
+
+        # counts the number of words in text_field
+
+        df[text_field + "_words"] = (
+            df[text_field]
+            .fillna("")
+            .apply(lambda x: len(word_tokenize(x, language=language)))
+        )
+
+        # counts the number of sentences in text_field
+
+        df[text_field + "_sentences"] = (
+            df[text_field]
+            .fillna("")
+            .apply(lambda x: len(sent_tokenize(x, language=language)))
+        )
+
+    def setup(self):
+        self.set_run_steps(["Processing texts", "Updating database"])
+        return self.success()
 
     def run(self):
 
-        process_start_time = datetime.now()
+        with self.step("Processing texts"):
 
-        # Assign the required parameters
+            table = self.parameters["user_prefix"] + self.task_parameters["table"]
+            text_fields = self.parameters["text"]
 
-        user_prefix = self.parameters["user_prefix"]
-        table = self.task_parameters["table"]
-        text_fields = self.parameters["text"]
+            df = pd.DataFrame(self.default_db.read_data(f"SELECT * FROM {table}"))
 
-        logging = self.logger
-        database = self.default_db
+            for t in text_fields:
+                self.info(f"Processing texts for {t} field")
+                self.desc_text(df, t, "english")
 
+        with self.step("Updating database"):
+            if df is not None:
 
-        # Read from database to dataframe
-
-        df = pd.DataFrame(database.read_data(f"SELECT * FROM {user_prefix}{table}"))
-
-        # Process the texts from article titles and summaries
-
-        for t in text_fields:
-            logging.info(f"Processing texts for {t} field")
-            desc_text(df, t, "english")
-            logging.info("Processing Completed!")
-
-        # Load the processed texts back into the database
-
-        df.published = df.published.apply(lambda x: datetime.strptime(x, '%a, %d %b %Y %H:%M:%S %Z')) # Convert published timestamps to datetime
-
-        if df is not None:
-            output = f"{user_prefix}{table}_{self.name}"
-            n_rows = len(df)
-            logging.info(f"Loading {n_rows} rows into destination: {output}....")
-            df.to_sql(
-                      output,
-                      database.engine,
-                      if_exists="replace",
-                      index=False,
-            )
-            logging.info("Load done.")
-
-        process_end_time = datetime.now()
-
-        # Add process timing to logger
-
-        logging.info("Process done, see details on timing below:")
-        logging.info(f"Process started at: {process_start_time}.")
-        logging.info(f"Process ended at: {process_end_time}.")
+                output = f"{table}_{self.name}"
+                n_rows = len(df)
+                self.info(f"Loading {n_rows} rows into destination: {output}....")
+                df.to_sql(
+                    output, self.default_db.engine, if_exists="replace", index=False
+                )
 
         return self.success()

@@ -4,9 +4,9 @@ SELECT source
      , AVG(title_sentences) AS average_ts
      , AVG(summary_letters) AS average_sl
      , AVG(summary_words) AS average_sw
-     , AVG(summary_sentences) AS average_sss
+     , AVG(summary_sentences) AS average_ss
 
-FROM {{user_prefix}}{{table}}
+FROM {{user_prefix}}dim_bbc_feeds_nlp
 
 GROUP BY 1
 

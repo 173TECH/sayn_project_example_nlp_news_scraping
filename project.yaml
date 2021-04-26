@@ -24,29 +24,18 @@ required_credentials:
 default_db: warehouse
 
 
-#DAGs SECTION
-
-# Specifies the DAGs that are run by the SAYN project
-# DAGs are stored into the dags folder and contain the details of the SAYN tasks
-# Refer to the dags without the .yaml extension
-dags:
-  - extract
-  - modelling
-  - data_science
-
-
 # Presets used in the project
 # This project uses one preset for the AutoSQL tasks
 presets:
-
-    modelling:
-      type: autosql
-      materialisation: table
-      destination:
-        table: "{{ user_prefix }}{{ task.name }}" # Dynamic table names
+  modelling:
+    type: autosql
+    materialisation: table
+    file_name: "{{ task.name }}.sql"
+    destination:
+      table: "{{ user_prefix }}{{ task.name }}" # Dynamic table names
 
 
 # Parameters used in the project
 # Note: These can be overwritten using settings.yaml or within individual tasks
 parameters:
-  user_prefix: ts_ # Change to your preferred prefix
+  user_prefix: # Change to your preferred prefix
