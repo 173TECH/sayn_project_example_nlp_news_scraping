@@ -1,11 +1,9 @@
 import pandas as pd
-from sayn import PythonTask
 import feedparser as f
-import pandas as pd
+from sayn import PythonTask
 
 
 class LoadData(PythonTask):
-
     def fetch_bbc_data(self, link):
         """Parse and label RSS BBC News data then return it in a pandas DataFrame"""
 
@@ -13,17 +11,21 @@ class LoadData(PythonTask):
 
         raw_data = f.parse(link)
 
-         # transform data to dataframe
+        # transform data to dataframe
 
         data = pd.DataFrame(raw_data.entries)
 
         # remove incompatible columns
 
-        data.drop(["title_detail", "summary_detail", "links", "published_parsed"], axis=1, inplace=True)
+        data.drop(
+            ["title_detail", "summary_detail", "links", "published_parsed"],
+            axis=1,
+            inplace=True,
+        )
 
-        # get the source
+        # get the source (this only works for BBC RSS feeds)
 
-        data["source"] = link[29:-8].replace("/","_")
+        data["source"] = link[29:-8].replace("/", "_")
 
         # generating ids to be unique, since same story ids can be published in different sources
 
@@ -31,16 +33,9 @@ class LoadData(PythonTask):
 
         return data
 
-
     def setup(self):
-        self.set_run_steps(
-            [
-                "Appending BBC data to dataframe",
-                "Updating database"
-            ]
-        )
+        self.set_run_steps(["Appending BBC data to dataframe", "Updating database"])
         return self.success()
-
 
     def run(self):
 
@@ -56,18 +51,13 @@ class LoadData(PythonTask):
                 temp_df = self.fetch_bbc_data(link)
                 n_rows = len(temp_df)
                 df = df.append(temp_df)
-                self.info(
-                    f"Loading {n_rows} rows into destination: {table}...."
-                )
-
+                self.info(f"Loading {n_rows} rows into destination: {table}....")
 
         with self.step("Updating database"):
             if df is not None:
 
-                df.to_sql( table
-                           ,self.default_db.engine
-                           ,if_exists="append"
-                           ,index=False)
-
+                df.to_sql(
+                    table, self.default_db.engine, if_exists="append", index=False
+                )
 
         return self.success()

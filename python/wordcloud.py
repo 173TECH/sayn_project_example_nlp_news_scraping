@@ -7,8 +7,9 @@ from wordcloud import WordCloud, STOPWORDS
 
 
 class RenderCloud(PythonTask):
-
-    def word_cloud(self, name, text, stopwords, b_colour = "white", c_colour = "firebrick", show=False):
+    def word_cloud(
+        self, name, text, stopwords, b_colour="white", c_colour="firebrick", show=False
+    ):
         """Word cloud generating function"""
 
         # attempt to find a compatible mask
@@ -18,12 +19,14 @@ class RenderCloud(PythonTask):
         except:
             mask = None
 
-        wordcloud = WordCloud(stopwords=stopwords
-                              , max_words=100
-                              , mask=mask
-                              , background_color = b_colour
-                              , contour_width=1
-                              , contour_color= c_colour).generate(text)
+        wordcloud = WordCloud(
+            stopwords=stopwords,
+            max_words=100,
+            mask=mask,
+            background_color=b_colour,
+            contour_width=1,
+            contour_color=c_colour,
+        ).generate(text)
 
         # store wordcloud image in "python/img"
 
@@ -36,16 +39,9 @@ class RenderCloud(PythonTask):
             plt.axis("off")
             plt.show()
 
-
     def setup(self):
-        self.set_run_steps(
-            [
-                "Grouping texts",
-                "Generating clouds"
-            ]
-        )
+        self.set_run_steps(["Grouping texts", "Generating clouds"])
         return self.success()
-
 
     def run(self):
 
@@ -59,18 +55,18 @@ class RenderCloud(PythonTask):
             sources = df.groupby("source")
             grouped_texts = sources.summary.sum()
 
-
         with self.step("Generating clouds"):
 
             stopwords = STOPWORDS.update(self.parameters["stopwords"])
             self.info("Generating bbc_wordcloud.png")
-            self.word_cloud("bbc", full_text, stopwords, b_colour = "white", c_colour = "black")
+            self.word_cloud(
+                "bbc", full_text, stopwords, b_colour="white", c_colour="black"
+            )
 
             # Source specific wordclouds
 
             for group, text in zip(grouped_texts.keys(), grouped_texts):
                 self.info(f"Generating {group}_wordcloud.png")
                 self.word_cloud(group, text, stopwords)
-
 
         return self.success()
