@@ -53,5 +53,4 @@ SAYN uses some key commands for run:
 
 - This project has a number of dependencies listed in requirements.txt, to install them please use "pip install -r requirements.txt"
 - Visualisation of the whole SAYN process for this project can be found in "images/dag.png"
-- In the python folder there is a "misc" folder which provides some additional functions that are imported during the python tasks
 - Masks for the wordclouds can be found in "python/img/masks"
