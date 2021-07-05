@@ -39,13 +39,11 @@ class LanguageProcessing(PythonTask):
         with self.step("Processing texts"):
 
             table = self.parameters["user_prefix"] + self.task_parameters["table"]
-            text_fields = self.parameters["text"]
 
             df = pd.DataFrame(self.default_db.read_data(f"SELECT * FROM {table}"))
 
-            for t in text_fields:
-                self.info(f"Processing texts for {t} field")
-                self.desc_text(df, t, "english")
+            self.info(f"Processing texts for title field")
+            self.desc_text(df, "title", "english")
 
         with self.step("Updating database"):
             if df is not None:

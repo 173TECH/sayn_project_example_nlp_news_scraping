@@ -7,12 +7,9 @@ tasks:
     type: python
     class: nlp.LanguageProcessing
     parents:
-      - dim_bbc_feeds
+      - dim_reddit_feeds
     parameters:
-      table: dim_bbc_feeds
-      text:
-        - title
-        - summary
+      table: dim_reddit_feeds
 
   # Generates wordclouds for every link in load_data
   # The stopwords parameter adds additional stopwords to our task
@@ -20,21 +17,8 @@ tasks:
     type: python
     class: wordcloud.RenderCloud
     parents:
-      - dim_bbc_feeds
+      - dim_reddit_feeds
     parameters:
-      table: dim_bbc_feeds
+      table: dim_reddit_feeds
       stopwords:
-        - say
-        - said
-        - says
-        - will
-        - country
-        - US
-        - England
-        - Scotland
-        - Wales
-        - NI
-        - Ireland
-        - Europe
-        - BBC
-        - yn
+        - Reddit
