@@ -2,7 +2,7 @@ tasks:
 
   # Python
 
-  # Performs NLP on dim_bbc_feeds
+  # Performs NLP on dim_reddit_feeds
   nlp:
     type: python
     class: nlp.LanguageProcessing
@@ -11,7 +11,7 @@ tasks:
     parameters:
       table: dim_reddit_feeds
 
-  # Generates wordclouds for every link in load_data
+  # Generates wordclouds for every source in load_data
   # The stopwords parameter adds additional stopwords to our task
   wordcloud:
     type: python

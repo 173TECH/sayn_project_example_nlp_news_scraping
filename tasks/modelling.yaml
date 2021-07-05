@@ -9,7 +9,7 @@ tasks:
       - load_data
 
 
-  # Provides some basic statistics on text within links, grouped by link
+  # Provides some basic text statistics, grouped by source
   dim_reddit_feeds_nlp_stats:
     preset: modelling
     materialisation: view
