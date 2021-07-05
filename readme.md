@@ -39,17 +39,20 @@ For more details, you can see the documentation here: https://173tech.github.io/
 ## Quick Notes
 
 SAYN uses 2 key files to control the project:
+
   - settings.yaml: individual settings which are not shared **(Note: You will need to rename the file `sample_settings.yaml` to `settings.yaml` before using "sayn run")**
   - project.yaml: project settings which are shared across all collaborators on the project
 
 **Tip: You can set your user_prefix in the `settings.yaml` file, it can be found in the profiles section under parameters**
 
 SAYN code is stored in 3 main folders:
+
   - tasks: where the SAYN tasks are defined
   - sql: for SQL tasks
   - python: for python tasks
 
 SAYN uses some key commands for run:
+
   - sayn run: run the whole project
     - -p flag to specify a profile when running sayn: e.g. sayn run -p prod
     - -t flag to specify tasks to run: e.g. sayn run -t task_name
