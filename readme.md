@@ -36,7 +36,7 @@ For more details, you can see the documentation here: https://173tech.github.io/
 
 ----
 
-## Quick Notes
+## Quick Notes
 
 SAYN uses 2 key files to control the project:
 
@@ -61,7 +61,7 @@ SAYN uses some key commands for run:
   - sayn --help for full detail on commands
 
 ---
-## Additional Notes:
+## Additional Notes:
 
 - Visualisation of the whole SAYN process for this project can be found in "images/dag.png"
 - Masks for the wordclouds can be found in "python/img/masks"
