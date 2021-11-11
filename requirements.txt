@@ -1,8 +1,8 @@
-sayn
-feedparser
-numpy
-pandas
-matplotlib
-Pillow
-wordcloud
-nltk
+sayn==0.5.10
+feedparser==6.0.1
+numpy==1.19.2
+pandas==1.1.2
+matplotlib==3.3.2
+Pillow==8.0.0
+wordcloud==1.8.0
+nltk==3.5
