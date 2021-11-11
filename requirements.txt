@@ -1,8 +1,9 @@
 sayn==0.5.10
 feedparser==6.0.1
-numpy==1.19.2
-pandas==1.1.2
+numpy==1.21.4
+pandas==1.3.4
 matplotlib==3.3.2
 Pillow==8.3.2
-wordcloud==1.8.0
-nltk==3.5
+wordcloud==1.8.1
+nltk==3.6
+pytest==6.2.5
